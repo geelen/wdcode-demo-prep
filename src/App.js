@@ -22,6 +22,7 @@ const Component = () => {
           <video
             autoPlay
             loop
+            muted
             style={{
               maxWidth: '90vw',
               maxHeight: '90vh'
