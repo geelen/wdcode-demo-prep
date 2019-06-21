@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import logo from './logo.svg'
+import './App.css'
+
+import useFetch from 'react-fetch-hook'
+
+const Component = () => {
+  const { data: response } = useFetch(
+    'https://www.reddit.com/r/WeatherGifs/top.json?t=week'
+  )
+  if (!response) return <div>Loading...</div>
+
+  return (
+    <div>
+      {response.data.children
+        .filter(child => child.data.is_video && child.data.media.reddit_video)
+        .map(child => (
+          <video
+            autoPlay
+            loop
+            style={{
+              maxWidth: '90vw',
+              maxHeight: '90vh'
+            }}
+            src={child.data.media.reddit_video.fallback_url}
+          />
+        ))}
+    </div>
+  )
+}
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Component />
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
